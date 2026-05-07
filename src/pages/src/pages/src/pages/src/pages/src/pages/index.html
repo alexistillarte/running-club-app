@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Running Club</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const NAV = () => (
+      <div style={{position:'fixed',bottom:0,left:0,right:0,background:'rgba(15,52,96,0.97)',display:'flex',justifyContent:'space-around',padding:'14px',borderTop:'1px solid rgba(255,255,255,0.1)'}}>
+        {[['🏠','Inicio','home'],['📊','Dashboard','dashboard'],['📸','Feed','feed'],['👤','Perfil','profile']].map(([icon,label,page])=>(
+          <button key={page} onClick={()=>window.setPage(page)} style={{background:'none',border:'none',color:'white',fontSize:'0.85rem',fontWeight:'600',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:'2px'}}>
+            <span style={{fontSize:'1.3rem'}}>{icon}</span>{label}
+          </button>
+        ))}
+      </div>
+    );
+
+    const Home = ({setPage}) => (
+      <div style={{textAlign:'center',padding:'80px 24px 100px'}}>
+        <h1 style={{fontSize:'3rem',fontWeight:'800',background:'linear-gradient(90deg,#FF6B35,#FFD700)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:'16px'}}>🏃 Running Club</h1>
+        <p style={{opacity:0.8,fontSize:'1.2rem',marginBottom:'40px'}}>Corre más lejos. Llega más lejos.</p>
+        <div style={{display:'flex',gap:'16px',justifyContent:'center',flexWrap:'wrap',marginBottom:'60px'}}>
+          <button onClick={()=>setPage('login')} style={{background:'linear-gradient(90deg,#FF6B35,#FF8C42)',color:'white',padding:'14px 32px',borderRadius:'50px',border:'none',fontWeight:'700',fontSize:'1rem',cursor:'pointer'}}>Unirme al club</button>
+          <button onClick={()=>setPage('dashboard')} style={{background:'transparent',color:'white',padding:'14px 32px',borderRadius:'50px',border:'2px solid white',fontWeight:'700',fontSize:'1rem',cursor:'pointer'}}>Ver Dashboard</button>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:'20px',maxWidth:'900px',margin:'0 auto'}}>
+          {[['📊','Tus métricas','Conecta Garmin o Strava y ve tu progreso'],['🎯','Tus metas','Define objetivos y celebra cada PR'],['👥','Comunidad','Feed de fotos y chat con tu grupo'],['💳','Membresía','$15/mes, cobro automático']].map(([icon,title,desc])=>(
+            <div key={title} style={{background:'rgba(255,255,255,0.07)',borderRadius:'16px',padding:'28px 20px',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div style={{fontSize:'2.5rem',marginBottom:'12px'}}>{icon}</div>
+              <h3 style={{marginBottom:'8px'}}>{title}</h3>
+              <p style={{opacity:0.7,fontSize:'0.9rem'}}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const Login = ({setPage}) => {
+      const [email,setEmail]=useState('');
+      const [pass,setPass]=useState('');
+      return (
+        <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'20px'}}>
+          <div style={{background:'rgba(255,255,255,0.07)',borderRadius:'24px',padding:'48px 36px',width:'100%',maxWidth:'400px',border:'1px solid rgba(255,255,255,0.1)',textAlign:'center'}}>
+            <h1 style={{fontSize:'2rem',fontWeight:'800',background:'linear-gradient(90deg,#FF6B35,#FFD700)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:'8px'}}>🏃 Running Club</h1>
+            <p style={{opacity:0.7,marginBottom:'32px'}}>Inicia sesión en tu cuenta</p>
+            {[['Email','email','tucorreo@email.com',email,setEmail],['Contraseña','password','••••••••',pass,setPass]].map(([label,type,ph,val,set])=>(
+              <div key={label} style={{textAlign:'left',marginBottom:'16px'}}>
+                <label style={{display:'block',marginBottom:'6px',fontSize:'0.9rem',opacity:0.8}}>{label}</label>
+                <input type={type} placeholder={ph} value={val} onChange={e=>set(e.target.value)} style={{width:'100%',padding:'12px 16px',borderRadius:'12px',border:'1px solid rgba(255,255,255,0.2)',background:'rgba(255,255,255,0.1)',color:'white',fontSize:'1rem'}}/>
+              </div>
+            ))}
+            <button onClick={()=>setPage('dashboard')} style={{width:'100%',background:'linear-gradient(90deg,#FF6B35,#FF8C42)',color:'white',padding:'14px',borderRadius:'50px',border:'none',fontWeight:'700',fontSize:'1rem',cursor:'pointer',marginTop:'8px'}}>Entrar</button>
+            <p style={{opacity:0.7,fontSize:'0.9rem',marginTop:'16px'}}>¿No tienes cuenta? <span onClick={()=>alert('Registro próximamente!')} style={{color:'#FF6B35',cursor:'pointer',fontWeight:'600'}}>Regístrate</span></p>
+          </div>
+        </div>
+      );
+    };
+
+    const Dashboard = () => (
+      <div style={{padding:'32px 20px 100px'}}>
+        <h1 style={{fontSize:'2rem',fontWeight:'800',marginBottom:'8px'}}>👋 Hola, Alex</h1>
+        <p style={{opacity:0.7,marginBottom:'28px'}}>Mayo 2026 — Sigue así, vas fuerte 💪</p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'16px',marginBottom:'28px'}}>
+          {[['🏃','47.3 km','Distancia este mes'],['⏱️','4h 23m','Tiempo total'],['⚡','5:34 /km','Pace promedio'],['✅','12','Carreras']].map(([icon,val,lbl])=>(
+            <div key={lbl} style={{background:'rgba(255,255,255,0.07)',borderRadius:'16px',padding:'20px',textAlign:'center',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div style={{fontSize:'2rem'}}>{icon}</div>
+              <div style={{fontSize:'1.5rem',fontWeight:'800',color:'#FF6B35',margin:'8px 0 4px'}}>{val}</div>
+              <div style={{fontSize:'0.8rem',opacity:0.7}}>{lbl}</div>
+            </div>
+          ))}
+        </div>
+        <h2 style={{fontSize:'1.2rem',fontWeight:'700',marginBottom:'16px'}}>🎯 Mis Metas</h2>
+        {[['Meta 10K — Marzo','57:30','55:00',75],['Distancia mensual','47.3 km','80 km',60],['Carreras/semana','3.4','4',85]].map(([name,cur,target,pct])=>(
+          <div key={name} style={{background:'rgba(255,255,255,0.07)',borderRadius:'16px',padding:'20px',marginBottom:'12px',border:'1px solid rgba(255,255,255,0.1)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',marginBottom:'12px'}}>
+              <span style={{fontWeight:'600'}}>{name}</span>
+              <span style={{opacity:0.7,fontSize:'0.9rem'}}>{cur} / {target}</span>
+            </div>
+            <div style={{background:'rgba(255,255,255,0.1)',borderRadius:'50px',height:'8px',overflow:'hidden'}}>
+              <div style={{background:'linear-gradient(90deg,#FF6B35,#FFD700)',height:'100%',width:`${pct}%`,borderRadius:'50px'}}/>
+            </div>
+            <p style={{fontSize:'0.8rem',opacity:0.6,margin:'8px 0 0'}}>{pct}% completado</p>
+          </div>
+        ))}
+      </div>
+    );
+
+    const Feed = () => {
+      const [liked,setLiked]=useState({});
+      const posts=[
+        {id:1,user:'Carlos M.',avatar:'🏃',time:'Hace 2h',activity:'Carrera matutina — 8.5 km',pace:'5:22 /km',comment:'¡Arrancando la semana fuerte! 💪',likes:12},
+        {id:2,user:'María G.',avatar:'👟',time:'Hace 5h',activity:'Tempo Run — 6 km',pace:'4:58 /km',comment:'PR en pace! No me lo creo 🔥',likes:18},
+        {id:3,user:'Alex I.',avatar:'⚡',time:'Ayer',activity:'Long Run — 12 km',pace:'5:45 /km',comment:'Preparando el 10K de marzo 🎯',likes:24},
+      ];
+      return (
+        <div style={{padding:'32px 20px 100px'}}>
+          <h1 style={{fontSize:'2rem',fontWeight:'800',marginBottom:'8px'}}>📸 Feed del Club</h1>
+          <p style={{opacity:0.7,marginBottom:'24px'}}>Actividad reciente del grupo</p>
+          {posts.map(p=>(
+            <div key={p.id} style={{background:'rgba(255,255,255,0.07)',borderRadius:'16px',padding:'20px',marginBottom:'16px',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'16px'}}>
+                <div style={{fontSize:'1.8rem',background:'rgba(255,107,53,0.2)',borderRadius:'50%',width:'44px',height:'44px',display:'flex',alignItems:'center',justifyContent:'center'}}>{p.avatar}</div>
+                <div>
+                  <div style={{fontWeight:'700'}}>{p.user}</div>
+                  <div style={{opacity:0.6,fontSize:'0.8rem'}}>{p.time}</div>
+                </div>
+              </div>
+              <div style={{background:'rgba(255,107,53,0.1)',borderRadius:'12px',padding:'12px',marginBottom:'12px'}}>
+                <div style={{fontWeight:'600',marginBottom:'4px'}}>🏃 {p.activity}</div>
+                <div style={{opacity:0.8,fontSize:'0.9rem'}}>⚡ Pace: {p.pace}</div>
+              </div>
+              <p style={{opacity:0.8,fontStyle:'italic',marginBottom:'16px'}}>"{p.comment}"</p>
+              <div style={{display:'flex',gap:'12px'}}>
+                <button onClick={()=>setLiked(prev=>({...prev,[p.id]:!prev[p.id]}))} style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:'50px',padding:'8px 16px',color:'white',cursor:'pointer',fontWeight:'600'}}>
+                  {liked[p.id]?'❤️':'🤍'} {p.likes+(liked[p.id]?1:0)}
+                </button>
+                <button style={{background:'rgba(255,255,255,0.1)',border:'none',borderRadius:'50px',padding:'8px 16px',color:'white',cursor:'pointer',fontWeight:'600'}}>💬 Comentar</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const Profile = () => (
+      <div style={{padding:'32px 20px 100px'}}>
+        <div style={{textAlign:'center',marginBottom:'32px'}}>
+          <div style={{fontSize:'3.5rem',background:'rgba(255,107,53,0.2)',borderRadius:'50%',width:'80px',height:'80px',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px'}}>🏃</div>
+          <h1 style={{fontSize:'1.8rem',fontWeight:'800',marginBottom:'8px'}}>Alex Istillarte</h1>
+          <p style={{opacity:0.7,marginBottom:'12px'}}>🟠 Admin — Running Club Orlando</p>
+          <span style={{background:'rgba(0,200,100,0.2)',border:'1px solid rgba(0,200,100,0.4)',borderRadius:'50px',padding:'6px 16px',fontSize:'0.85rem',color:'#00c864'}}>✅ Membresía Activa — $15/mes</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-around',background:'rgba(255,255,255,0.07)',borderRadius:'16px',padding:'20px',marginBottom:'28px',border:'1px solid rgba(255,255,255,0.1)'}}>
+          {[['347','km totales'],['89','carreras'],['5:34','pace avg']].map(([val,lbl])=>(
+            <div key={lbl} style={{textAlign:'center'}}>
+              <div style={{fontSize:'1.8rem',fontWeight:'800',color:'#FF6B35'}}>{val}</div>
+              <div style={{fontSize:'0.8rem',opacity:0.6}}>{lbl}</div>
+            </div>
+          ))}
+        </div>
+        <h2 style={{fontSize:'1.2rem',fontWeight:'700',marginBottom:'12px'}}>🏆 Logros</h2>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px',marginBottom:'28px'}}>
+          {[['🥇','Primer 10K','Marzo 2026'],['🔥','30 días seguidos','Feb 2026'],['⚡','Pace bajo 5:00','Ene 2026'],['🏅','Top 3 del mes','Dic 2025']].map(([icon,title,date])=>(
+            <div key={title} style={{background:'rgba(255,255,255,0.07)',borderRadius:'12px',padding:'16px',textAlign:'center',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div style={{fontSize:'2rem'}}>{icon}</div>
+              <div style={{fontWeight:'600',fontSize:'0.9rem',margin:'8px 0 4px'}}>{title}</div>
+              <div style={{opacity:0.6,fontSize:'0.75rem'}}>{date}</div>
+            </div>
+          ))}
+        </div>
+        <h2 style={{fontSize:'1.2rem',fontWeight:'700',marginBottom:'12px'}}>🔗 Conexiones</h2>
+        {[['🟠 Strava'],['⚫ Garmin']].map(([name])=>(
+          <div key={name} style={{background:'rgba(255,255,255,0.07)',borderRadius:'12px',padding:'16px 20px',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px',border:'1px solid rgba(255,255,255,0.1)'}}>
+            <span style={{fontWeight:'600'}}>{name}</span>
+            <button style={{background:'linear-gradient(90deg,#FF6B35,#FF8C42)',color:'white',border:'none',borderRadius:'50px',padding:'8px 20px',cursor:'pointer',fontWeight:'700'}}>Conectar</button>
+          </div>
+        ))}
+      </div>
+    );
+
+    const App = () => {
+      const [page,setPage]=useState('home');
+      window.setPage = setPage;
+      const pages = { home:<Home setPage={setPage}/>, login:<Login setPage={setPage}/>, dashboard:<Dashboard/>, feed:<Feed/>, profile:<Profile/> };
+      return <div>{pages[page]||pages.home}<NAV/></div>;
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
